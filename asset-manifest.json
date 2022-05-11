@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/project-shop24h-baokhanh/static/css/main.38be36b0.css",
+    "main.js": "/project-shop24h-baokhanh/static/js/main.e67a4b41.js",
+    "static/js/787.a3b1007a.chunk.js": "/project-shop24h-baokhanh/static/js/787.a3b1007a.chunk.js",
+    "static/media/bannersamsung.jpg": "/project-shop24h-baokhanh/static/media/bannersamsung.613bc10968e8b4deb515.jpg",
+    "static/media/bannervivo.jpg": "/project-shop24h-baokhanh/static/media/bannervivo.99562ace00615f366556.jpg",
+    "static/media/banneriphone.jpg": "/project-shop24h-baokhanh/static/media/banneriphone.99913c3574b6b8a9cb8a.jpg",
+    "static/media/bannerxiaomi.jpg": "/project-shop24h-baokhanh/static/media/bannerxiaomi.2ae32e48bd366ed3f8e9.jpg",
+    "static/media/pc.jpg": "/project-shop24h-baokhanh/static/media/pc.bcb8ca97227dffb9f2b3.jpg",
+    "static/media/bag.jpg": "/project-shop24h-baokhanh/static/media/bag.b17c7ab6103d8ff98620.jpg",
+    "static/media/headphone.jpg": "/project-shop24h-baokhanh/static/media/headphone.4372c19af42b6f36a662.jpg",
+    "static/media/watch.jpg": "/project-shop24h-baokhanh/static/media/watch.4dfed84339575235742b.jpg",
+    "index.html": "/project-shop24h-baokhanh/index.html",
+    "main.38be36b0.css.map": "/project-shop24h-baokhanh/static/css/main.38be36b0.css.map",
+    "main.e67a4b41.js.map": "/project-shop24h-baokhanh/static/js/main.e67a4b41.js.map",
+    "787.a3b1007a.chunk.js.map": "/project-shop24h-baokhanh/static/js/787.a3b1007a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.38be36b0.css",
+    "static/js/main.e67a4b41.js"
+  ]
+}
