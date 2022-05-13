@@ -39,26 +39,48 @@ const Content = ({productProp, handleMoreProductProp}) =>{
             {!productProp ? <CircularProgress color='success'/> :
             productProp.map((element, index) =>{
                 return(
-                <Card sx={{flex:1, flexBasis: "30%", display:"flex", maxWidth:"384px", margin:"10px"}} key={index}>  
-                        <CardActionArea sx={{display:"flex", flexDirection:"column"}} onClick={()=>{onBtnGetDetail(element)}}>
-                            <CardMedia
-                                component="img"
-                                image={element.imageUrl}
-                                alt="green iguana"
-                                sx={{width:"200px", height:"200px", objectFit:"contain"}}
-                            />
-                            <CardContent>
-                            <Typography variant="body2" align="center">
-                                    <b>{element.name}</b>
-                            </Typography>
-                            <Typography variant="body2" align="center" color="error">
-                                    <b>${element.buyPrice}</b>
-                            </Typography>
-                            
-                            </CardContent>
-                        </CardActionArea>
-                       
+                    <>
+                    <Card sx={{flex:1, flexBasis: "30%", display:{xs:'none',sm:'flex', md:'flex'}, maxWidth:"384px", margin:"10px"}} key={index}>  
+                            <CardActionArea sx={{display:"flex", flexDirection:"column"}} onClick={()=>{onBtnGetDetail(element)}}>
+                                <CardMedia
+                                    component="img"
+                                    image={element.imageUrl}
+                                    alt="green iguana"
+                                    sx={{width:"200px", height:"200px", objectFit:"contain"}}
+                                />
+                                <CardContent>
+                                <Typography variant="body2" align="center">
+                                        <b>{element.name}</b>
+                                </Typography>
+                                <Typography variant="body2" align="center" color="error">
+                                        <b>${element.buyPrice}</b>
+                                </Typography>
+                                
+                                </CardContent>
+                            </CardActionArea>
+                           
                     </Card>
+                    <Card sx={{flex:1, flexBasis: "50%", display:{xs:'flex',sm:'none', md:'none'}, maxWidth:"384px", margin:"10px"}} key={index}>  
+                            <CardActionArea sx={{display:"flex", flexDirection:"column"}} onClick={()=>{onBtnGetDetail(element)}}>
+                                <CardMedia
+                                    component="img"
+                                    image={element.imageUrl}
+                                    alt="green iguana"
+                                    sx={{width:"200px", height:"200px", objectFit:"contain"}}
+                                />
+                                <CardContent>
+                                <Typography variant="body2" align="center">
+                                        <b>{element.name}</b>
+                                </Typography>
+                                <Typography variant="body2" align="center" color="error">
+                                        <b>${element.buyPrice}</b>
+                                </Typography>
+                                
+                                </CardContent>
+                            </CardActionArea>
+                           
+                    </Card>
+                    </>
                 )
             })}
 

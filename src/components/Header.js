@@ -16,8 +16,14 @@ import StarIcon from '@mui/icons-material/Star';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 
+import List from '@mui/material/List';
+
+import LoginIcon from '@mui/icons-material/Login';
+import HomeIcon from '@mui/icons-material/Home';
+import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-import { Link , Grid, Badge, CardMedia, Input, Stack, Popper , Grow, Paper, ClickAwayListener , MenuList, Modal} from '@mui/material';
+
+import { Link , Grid, Badge, CardMedia, Input, Stack, Popper , Grow, Paper, ClickAwayListener , MenuList, Modal, Drawer} from '@mui/material';
 
 import { auth, googleProvider } from '../firebase';
 
@@ -72,10 +78,6 @@ const Header = ({dataCartProp, number, refreshPageHeader, handleAddMoreCart, han
   };
 
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -84,6 +86,72 @@ const Header = ({dataCartProp, number, refreshPageHeader, handleAddMoreCart, han
       setOpen(false);
     }
   }
+
+  const [state, setState] = React.useState({
+        top: false,
+        left: false,
+        bottom: false,
+        right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 200 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+      style={{backgroundColor:'#15161D', height:"100vh", padding:"15px"}}
+    >
+    
+      <List>
+          <Grid container color="#1976d2" marginY={1}>
+                  {/* {console.log(user)} */}
+                {user == null ?
+                    <>
+                      <LoginIcon/>
+                      <Button sx={{fontWeight:700}} href='/dang-nhap'>Login</Button>
+                    </>
+                    :
+                    <>
+                      <img src={user.photoURL} width={30} height={30} alt="avatar" style={{borderRadius: "50%", marginRight:"10px"}} ></img>
+                      <Typography color="#fff" variant='body1'>Hello, {user.displayName}</Typography>
+                    </>
+                }
+            </Grid>
+        
+            <Grid cointainer color="#1976d2" marginY={1}>
+                <HomeIcon/>
+                <Button href='/'><b>Home</b></Button>
+            </Grid>
+
+            <Grid cointainer color="#1976d2" marginY={1}>
+              <StoreMallDirectoryIcon/>
+              <Button href='/products'><b>Products</b></Button>
+            </Grid>
+
+            <Grid cointainer color="#1976d2" marginY={1}>
+              {number?
+                <Badge badgeContent={number} color="error">
+                    <LocalGroceryStoreIcon/>
+                    <Button href='/order'><b>Order</b></Button>
+                </Badge>
+                  :
+                <Badge badgeContent={numberCartProduct} color="error">
+                  <LocalGroceryStoreIcon/>
+                  <Button href='/order'><b>Order</b></Button>
+                </Badge>
+              }   
+     
+            </Grid>
+            
+         
+      </List>
+    </Box>
+  );
 
 
 useEffect(() =>{
@@ -287,7 +355,9 @@ const onBtnGetToOrder = () =>{
     <Grid container justifyContent='space-between' p={3}>
     <Grid item xs={5}>
           <Typography variant='h5' fontWeight={700}>TOTAL: {handleTotalPrice()}$</Typography>
-        </Grid>
+        </Grid>   
+        
+        
        
         <Grid item xs={4}>
           <Button variant='contained' color='secondary' onClick={onBtnGetToOrder}>VIEW CART</Button>
@@ -306,63 +376,46 @@ const onBtnGetToOrder = () =>{
             variant="h5"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: 2, display: { xs: 'none', sm: 'flex', md: 'flex' } }}
             color="#fff"
           >
             <Link href="/" sx={{textDecoration:"none", color:"#fff", fontStyle:'italic'}}><b>Shop<div style={{display:"inline", color:'red'}}>24h</div></b></Link>
           </Typography>
 
-          {/* MOBILE */}
-        
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}> 
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-
+         
           {/* MOBILE */}
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{ flexGrow: 3, display: { xs: 'flex', sm: 'none', md: 'none' } }}
           >
-           <Link href="/"> DEVCAMP 120</Link>
+           <Link href="/" sx={{textDecoration:"none", color:"#fff", fontStyle:'italic'}}><b>Shop<div style={{display:"inline", color:'red'}}>24h</div></b></Link>
           </Typography>
 
-          <Box sx={{ flexGrow: 2, display: { xs: 'none', md: 'flex' }}} justifyContent="flex-start">
+            {/* MOBILE */}
+          
+            <Box justifyContent='flex-end' sx={{flexGrow: 1 , display:{xs:"flex", sm:'none', md:'none'}, marginLeft:"15px"}}>      
+            {number?
+              <Badge badgeContent={number} color="error">
+                  <Button onClick={toggleDrawer('right', true)}><MenuIcon size="large"/></Button>
+              </Badge>
+                :
+              <Badge badgeContent={numberCartProduct} color="error">
+                <Button onClick={toggleDrawer('right', true)}><MenuIcon/></Button>
+              </Badge>
+            }   
+              
+              <Drawer
+                anchor={'right'}
+                open={state['right']}
+                onClose={toggleDrawer('right', false)}
+              >
+                {list('right')}
+              </Drawer>
+          </Box>
+
+          <Box sx={{ flexGrow: 2, display: { xs: 'none', sm: 'flex', md: 'flex' }}} justifyContent="flex-start">
               {navBars.map((navBar) =>(
                 <Button
                 key={navBar}
@@ -375,7 +428,7 @@ const onBtnGetToOrder = () =>{
 
           </Box>
 
-          <Box sx={{ flexGrow: 4, display: { xs: 'none', md: 'flex' }}} justifyContent="flex-start">
+          <Box sx={{ flexGrow: 4, display: { xs: 'none', sm: 'none', md: 'flex' }}} justifyContent="flex-start">
                 <Grid container>
                   <Grid item xs={8}>
                     <Input disableUnderline sx={{backgroundColor:"#fff", borderRadius:"15px 0 0 15px", padding:"2px"}} placeholder='Search products' fullWidth></Input>
@@ -388,7 +441,7 @@ const onBtnGetToOrder = () =>{
           </Box>
 
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }}} justifyContent="flex-end">
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', md: 'flex' }}} justifyContent="flex-end">
             {user == null ?
               <Button sx={{fontWeight:700, color:"#fff"}} href='/dang-nhap'>Login</Button>
               :
@@ -438,18 +491,11 @@ const onBtnGetToOrder = () =>{
                   )}
                 </Popper>
               </Stack>
-            // <Grid Container justifyContent="flex-end">
-              
-            //     <img src={user.photoURL} width={30} height={30} alt="avatar" style={{borderRadius: "50%"}} ></img>
-              
-              
-            //       <Button onClick={logoutGoogle} sx={{fontWeight:700}} >Logout</Button>
-            //       <Typography variant='body1' color="#fff" >Xin chào, {user.displayName}</Typography>
-            // </Grid>
+         
           }
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} justifyContent="space-evenly">
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', md: 'flex' } }} justifyContent="space-evenly">
          
             <Badge badgeContent={0} color="primary">
               <NotificationsIcon cursor="pointer" sx={{color: "#fff"}}/>
@@ -460,25 +506,15 @@ const onBtnGetToOrder = () =>{
             </Badge>
 
              {number?
-             <Badge badgeContent={number} color="error">
-             {
-             // console.log(dataCart)
-               console.log(number)
-             }
+              <Badge badgeContent={number} color="error">
                <LocalGroceryStoreIcon cursor="pointer" onClick={handleOpenCart} sx={{color: "#fff"}}/>
-           </Badge>
-           :
-           <Badge badgeContent={numberCartProduct} color="error">
-           {
-           // console.log(dataCart)
-             console.log(numberCartProduct)
-           }
-             <LocalGroceryStoreIcon cursor="pointer" onClick={handleOpenCart} sx={{color: "#fff", display: {handleDisplayCart}}}/>
-         </Badge>
-
+              </Badge>
+                :
+              <Badge badgeContent={numberCartProduct} color="error">
+                <LocalGroceryStoreIcon cursor="pointer" onClick={handleOpenCart} sx={{color: "#fff", display: {handleDisplayCart}}}/>
+            </Badge>
             }   
-            
-                  
+                          
           </Box>
         </Toolbar>
       </Container>
