@@ -75,7 +75,7 @@ const Content = ({productProp, handleMoreProductProp}) =>{
                                 <Typography variant="body2" align="center" color="error">
                                         <b>${element.buyPrice}</b>
                                 </Typography>
-                                
+                                                               
                                 </CardContent>
                             </CardActionArea>
                            

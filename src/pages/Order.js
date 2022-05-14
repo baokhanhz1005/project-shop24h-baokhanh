@@ -1,4 +1,5 @@
-import { Container ,Typography, Paper, Button, StepContent, StepLabel, Step, Box, Stepper, Grid, CardMedia, Input } from "@mui/material";
+import * as React from 'react';
+import { Container ,Typography, Paper, Button, StepContent, StepLabel, Step, Box, Stepper, Grid, CardMedia, Input, Snackbar , Alert} from "@mui/material";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
@@ -12,7 +13,15 @@ const Order = () => {
         const [dataCartReview, setDataCartReview] = useState([]);
         const [refreshPage, setRefreshPage] = useState(0);
         const [activeStep, setActiveStep] = useState(0);
-        const [handleDisplayCart, setHandleDisplayCart] = useState("none")
+        const [handleDisplayCart, setHandleDisplayCart] = useState("none");
+
+        const [fullName, setFullName] = useState("");
+        const [email, setEmail] = useState("");
+        const [address, setAddress] = useState("");
+        const [phone, setPhone] = useState("");
+        const [city, setCity] = useState("");
+        const [country, setCountry] = useState("");
+
 
         const navigate = useNavigate();
         const handleNext = () => {
@@ -26,7 +35,19 @@ const Order = () => {
         const handleReset = () => {
           setActiveStep(0);
         };
+//////////////////////////////////////////////////////////////////////////////////////////////////
+        const [open, setOpen] =useState(false);
+        const [dataAlert, setDataAlert] = useState("");
+               
+          const handleClose = () => {
+            setOpen(false);
+          }
 
+          const handleOpen = () =>{
+            setOpen(true);
+          }
+        
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         const checkLogin = (paramIsLogin) =>{
             if(!paramIsLogin){
                 navigate("/dang-nhap");
@@ -88,6 +109,65 @@ const Order = () => {
             setRefreshPage(refreshPage + 1);
         }
 
+        const handleDataInput = () =>{
+            let inputForm = {
+                fullName: "",
+                email: "",
+                phone: "",
+                address: "",
+                city: "",
+                country: ""
+            }
+
+            getDataInput(inputForm)
+            let isValidateData = validateData(inputForm);
+            if(isValidateData){
+                alert("ok");
+                setActiveStep(activeStep + 1);
+            }
+        }
+
+        const getDataInput = (paramInputForm) =>{
+            paramInputForm.fullName = fullName;
+            paramInputForm.email = email;
+            paramInputForm.phone = phone;
+            paramInputForm.address = address;
+            paramInputForm.city = city;
+            paramInputForm.country = country;
+
+        }
+
+        const validateData = (paramInputForm) =>{
+            if(paramInputForm.fullName ===""){
+                setDataAlert("Please fill out the fullname")
+                handleOpen()
+                return false;
+            }
+
+            var mailformat = /^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/;
+            if(paramInputForm.email === "" ){
+                setDataAlert("Please fill out the email")
+                handleOpen()
+                return false;
+            }
+            if(paramInputForm.phone === ""){
+                setDataAlert("Please fill out the phone")
+                handleOpen()
+                return false;
+            }
+            if(isNaN(parseInt(paramInputForm.phone,10))){
+                setDataAlert("Phone invalid, please try agian !")
+                handleOpen()
+                return false;
+            }
+            if(paramInputForm.address ===""){
+                setDataAlert("Please fill out the address")
+                handleOpen()
+                return false;
+            }
+            return true;
+        }
+
     
     return(
         <>
@@ -97,6 +177,18 @@ const Order = () => {
             />
             <Container sx={{marginTop:"80px"}}>
             <Box >
+            <Snackbar
+                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
+                    open={open}
+                    onClose={handleClose}
+                    autoHideDuration={6000}  
+                   >
+                       <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                            <b>{dataAlert}</b>
+                        </Alert>
+                   </Snackbar>
+                    
+                
                 <Stepper activeStep={activeStep} orientation="vertical">
                     {/* MUC 1 - GIO HANG */}
                     <Step>  
@@ -170,27 +262,27 @@ const Order = () => {
                                 <Grid item xs={7}>
                                     <Grid container marginY={4}>
                                         <Label><b>Fullname:</b></Label>
-                                        <Input fullWidth></Input>
+                                        <Input value={fullName} onChange={(event) =>{setFullName(event.target.value)}} fullWidth></Input>
                                     </Grid>
                                     <Grid container marginY={4}>
                                         <Label><b>Email:</b></Label>
-                                        <Input fullWidth></Input>
+                                        <Input value={email} onChange={(event) =>{setEmail(event.target.value)}} fullWidth></Input>
                                     </Grid>
                                     <Grid container marginY={4}>
                                         <Label><b>Phone:</b></Label>
-                                        <Input fullWidth></Input>
+                                        <Input value={phone} onChange={(event) =>{setPhone(event.target.value)}} fullWidth></Input>
                                     </Grid>
                                     <Grid container marginY={4}>
                                         <Label><b>Address:</b></Label>
-                                        <Input fullWidth></Input>
+                                        <Input value={address} onChange={(event) =>{setAddress(event.target.value)}} fullWidth></Input>
                                     </Grid>
                                     <Grid container marginY={4}>
                                         <Label><b>City:</b></Label>
-                                        <Input fullWidth></Input>
+                                        <Input value={city} onChange={(event) =>{setCity(event.target.value)}} fullWidth></Input>
                                     </Grid>
                                     <Grid container marginY={4}>
                                         <Label><b>Country:</b></Label>
-                                        <Input fullWidth></Input>
+                                        <Input value={country} onChange={(event) =>{setCountry(event.target.value)}} fullWidth></Input>
                                     </Grid>
                                 </Grid>
 
@@ -234,7 +326,7 @@ const Order = () => {
                             <div>
                             <Button
                                 variant="contained"
-                                onClick={handleNext}
+                                onClick={handleDataInput}
                                 sx={{ mt: 1, mr: 1 }}
                             >
                                 Continue

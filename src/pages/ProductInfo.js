@@ -136,8 +136,6 @@ const ProductInfo = () =>{
     }
     
 
-
-
     const danhMuc = [
         {
             name: "Home",
