@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container ,Typography, Paper, Button, StepContent, StepLabel, Step, Box, Stepper, Grid, CardMedia, Input, Snackbar , Alert, TextField, RadioGroup, FormControlLabel, Radio, Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
+import { Container ,Typography, Paper, Button, StepContent, StepLabel, Step, Box, Stepper, Grid, CardMedia, Input, Snackbar , Alert, TextField, RadioGroup, FormControlLabel, Radio, Accordion, AccordionDetails, AccordionSummary, Modal, Backdrop, Fade} from "@mui/material";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
@@ -10,6 +10,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import { useNavigate } from "react-router-dom";
 import { Label } from "reactstrap";
+import successImg from '../assets/images/success.png'
 
 const Order = () => {
         const [dataCartReview, setDataCartReview] = useState([]);
@@ -28,7 +29,7 @@ const Order = () => {
         const [expanded2, setExpanded2] = useState(false);
 
         const [namePaymentMethod, setNamePaymentMethod] = useState("");
-
+        
         const navigate = useNavigate();
         const handleNext = () => {
           setActiveStep(activeStep + 1);
@@ -38,9 +39,27 @@ const Order = () => {
           setActiveStep(activeStep - 1);
         };
       
-        const handleReset = () => {
-          setActiveStep(0);
-        };
+        const style = {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 800,
+            bgcolor: 'background.paper',
+            border: '2px solid green',
+            // bgcolor: "#53e753",
+            boxShadow: 24,
+            p: 4,
+          };
+
+        const [openModal, setOpenModal] = useState(false);
+        const handleOpenModal = () => setOpenModal(true);
+        const handleCloseModal = () => {
+            localStorage.setItem('number', JSON.stringify(0));
+            localStorage.setItem('dataCart', JSON.stringify([]));
+            setOpenModal(false);
+            navigate("/");
+        }
 //////////////////////////////////////////////////////////////////////////////////////////////////
         const [open, setOpen] =useState(false);
         const [dataAlert, setDataAlert] = useState("");
@@ -512,7 +531,7 @@ const Order = () => {
                             <Button
                                 variant="contained"
                                 color='secondary'
-                                onClick={handleNext}
+                                onClick={handleOpenModal}
                                 sx={{ mt: 1, mr: 1 }}
                             >
                                 Confirm
@@ -532,6 +551,42 @@ const Order = () => {
                 </Stepper>
                 
             </Box>
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={openModal}
+                onClose={handleCloseModal}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                timeout: 500,
+                }}
+            >
+        <Fade in={openModal}>
+          <Box sx={style}>
+            <Typography color='#7ac043' id="transition-modal-title" variant="h3" component="h2">
+              <b>Success !!!</b>
+            </Typography>
+            <Typography id="transition-modal-description" sx={{ mt: 2, color:"#888", fontStyle:"italic" }}>
+              <b>Thank for your order, please wait for staff contact you to confirm this order.</b>
+              <br/>
+              <b> This page will be returned to home page</b>
+            </Typography>
+            <Grid container display='flex' justifyContent='center'>
+            <CardMedia
+                display="flex"
+                component="img"
+                image={successImg}
+                alt="green iguana"
+                sx={{width:"200px", height:"200px", objectFit:"contain"}}
+            />
+            </Grid>
+            <Grid container display='flex' justifyContent='center' marginY={3}>
+                <Button onClick={handleCloseModal} sx={{width:"150px"}} variant='contained' color='success'><b>OK</b></Button>
+            </Grid>
+          </Box>
+        </Fade>
+      </Modal>
         
             </Container>
         <Footer/>

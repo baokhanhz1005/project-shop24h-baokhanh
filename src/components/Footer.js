@@ -7,7 +7,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 
 const Footer = () =>{
     return(
-        <div style={{padding: "20px" , backgroundColor: "#15161D", marginTop:"60px", borderTop:"3px solid red"}}>
+        <div style={{padding: "20px" , backgroundColor: "#15161D", marginTop:"77px", borderTop:"3px solid red" , bottom: 0}}>
             <Container>
             <Grid container color='white'>
                 <Grid item xs={3}>
