@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Container ,Typography, Paper, Button, StepContent, StepLabel, Step, Box, Stepper, Grid, CardMedia, Input, Snackbar , Alert} from "@mui/material";
+import { Container ,Typography, Paper, Button, StepContent, StepLabel, Step, Box, Stepper, Grid, CardMedia, Input, Snackbar , Alert, TextField, RadioGroup, FormControlLabel, Radio, Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import { useNavigate } from "react-router-dom";
 import { Label } from "reactstrap";
 
@@ -22,6 +24,10 @@ const Order = () => {
         const [city, setCity] = useState("");
         const [country, setCountry] = useState("");
 
+        const [expanded1, setExpanded1] = useState(false);
+        const [expanded2, setExpanded2] = useState(false);
+
+        const [namePaymentMethod, setNamePaymentMethod] = useState("");
 
         const navigate = useNavigate();
         const handleNext = () => {
@@ -71,7 +77,21 @@ const Order = () => {
             }
             return price;
         }
+//////////////////////// HANDLE SLECT PAYMNET METHOD
 
+        const handleChange1 = () => {
+            setExpanded1(true);
+            setExpanded2(false);
+            setNamePaymentMethod("Cash Out Delivery (COD)");
+          };
+        
+          const handleChange2 = () => {
+            setExpanded2(true);
+            setExpanded1(false);
+            setNamePaymentMethod("Direct Bank Transfer")
+          };
+
+//////////////////////// HANDLE SLECT PAYMNET METHOD
         useEffect(() =>{
             const isLogin = JSON.parse(localStorage.getItem('isLogin'));
             checkLogin(isLogin);
@@ -122,7 +142,7 @@ const Order = () => {
             getDataInput(inputForm)
             let isValidateData = validateData(inputForm);
             if(isValidateData){
-                alert("ok");
+                // alert("ok");
                 setActiveStep(activeStep + 1);
             }
         }
@@ -163,6 +183,11 @@ const Order = () => {
             if(paramInputForm.address ===""){
                 setDataAlert("Please fill out the address")
                 handleOpen()
+                return false;
+            }
+            if(expanded1 === false && expanded2 === false){
+                setDataAlert("Please select payment method")
+                handleOpen();
                 return false;
             }
             return true;
@@ -318,6 +343,41 @@ const Order = () => {
                                             </Grid>
                                         </Grid>
 
+                                        <Grid container borderBottom='2px solid green' marginTop={5}>
+                                            <Typography color="#777" fontSize="20px" fontWeight={750} fontStyle='italic'>Choose a payment method</Typography>                                                                                                             
+                                        </Grid>
+                                        <Accordion expanded={expanded1} onChange={handleChange1}>
+                                            <AccordionSummary
+                                            expandIcon={expanded1 ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon /> }
+                                            aria-controls="panel1bh-content"
+                                            id="panel1bh-header"
+                                            >
+                                            <Typography sx={{flexShrink: 0 }}>
+                                                <b>Cash Out Delivery (COD)</b>
+                                            </Typography>
+                                            
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                            <Typography fontSize="14px" color="#888">
+                                                You will pay with cash upon delivery.
+                                            </Typography>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                        <Accordion expanded={expanded2} onChange={handleChange2}>
+                                            <AccordionSummary
+                                            expandIcon={expanded2 ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon /> }
+                                            aria-controls="panel2bh-content"
+                                            id="panel2bh-header"
+                                            >
+                                            <Typography sx={{flexShrink: 0 }}><b>Direct Bank Transfer</b></Typography>
+                                            
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                            <Typography fontSize="14px" color="#888">
+                                            Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                            </Typography>
+                                            </AccordionDetails>
+                                        </Accordion>
                                     </Box>
                                 </Grid>
                             </Grid>
@@ -345,20 +405,120 @@ const Order = () => {
                     {/* MUC 3 - KIEM TRA VA XAC NHAN DON HANG */}
                     <Step>
                         <StepLabel>
-                            <Typography variant="h5"><b>Confirm Order</b></Typography>
+                            <Typography variant="h5"><b>Confirm your order</b></Typography>
                         </StepLabel>
                         <StepContent>
-                        <Typography>ádaasdsadsadasdasdas</Typography>
+                        <Box>
+                            <Grid container justifyContent='center' marginY={5}>
+                                <Grid item xs={10}>
+                                        <Grid container>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    disabled
+                                                    id="outlined-disabled"
+                                                    label="Fullname"
+                                                    value={fullName}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    />
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    disabled
+                                                    id="outlined-disabled"
+                                                    label="Email"
+                                                    value={email}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container marginTop={3}>                                       
+                                                <TextField
+                                                    disabled
+                                                    id="outlined-disabled"
+                                                    label="Phone number"
+                                                    value={phone}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    />                                                                   
+                                        </Grid>
+                                        <Grid container marginTop={3}>
+                                                <TextField
+                                                    disabled
+                                                    id="outlined-disabled"
+                                                    label="Address"
+                                                    value={address}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    />                                       
+                                        </Grid>
+                                        <Grid container marginY={3}>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    disabled
+                                                    id="outlined-disabled"
+                                                    label="City"
+                                                    value={city}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    />
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    disabled
+                                                    id="outlined-disabled"
+                                                    label="Country"
+                                                    value={country}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container>
+                                                <TextField
+                                                    disabled
+                                                    id="outlined-disabled"
+                                                    label="Payment Method"
+                                                    value={namePaymentMethod}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    />                                       
+                                        </Grid>
+                                        <Grid container>
+                                            <Typography fontSize="18px" color="#999" fontStyle="italic">About cart :</Typography>
+                                            {dataCartReview.map((element, index) =>{
+                                                return(
+                                                    <Grid container key={index}>
+                                                        <Typography fontSize="15px" color="#999" fontStyle='italic' borderBottom="1px solid #888">{element.name} (x{element.count})   </Typography>
+                                                    </Grid>
+                                                )
+                                            })}
+                                            <Grid container marginY={1}>
+                                            <Grid item xs={1}>
+                                                <Typography color="#777" fontSize="18px">Payment:</Typography>                                     
+                                            </Grid>
+                                            <Grid item xs={1}>
+                                                <Typography align="center" color="#888" fontSize="18px" fontStyle="italic" fontWeight={750}>{handleTotalCart()}$</Typography>                                     
+                                            </Grid>
+                                        </Grid>
+                                        </Grid>
+                                </Grid>
+                                
+                            </Grid>
+                        </Box>
                         <Box sx={{ mb: 2 }}>
                             <div>
                             <Button
                                 variant="contained"
+                                color='secondary'
                                 onClick={handleNext}
                                 sx={{ mt: 1, mr: 1 }}
                             >
                                 Confirm
                             </Button>
                             <Button
+                                c
                                 onClick={handleBack}
                                 sx={{ mt: 1, mr: 1 }}
                             >
@@ -370,14 +530,7 @@ const Order = () => {
                     </Step>
                  
                 </Stepper>
-                {activeStep === 2 && (
-                    <Paper square elevation={0} sx={{ p: 3 }}>
-                    <Typography>All steps completed - you&apos;re finished</Typography>
-                    <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                        Reset
-                    </Button>
-                    </Paper>
-                )}
+                
             </Box>
         
             </Container>
